@@ -19,15 +19,21 @@ import logicetoile.Main;
 
 public class Algorythms {
 
+/****************************************************************/
+/*         < ALGORYTHMS TO SELECT EXAM MARKERS >
+ * 
+ */
     private MySQL inst;
-    static final int numberOfMarkersPerQuestion=1;
+    static final int numberOfMarkersPerQuestion = 1;
 
     /*  Algorithm for markers selection of a single exam    */
     /**
-   * Algorithm for markers selection of a single exam.
-   * @param  {SubmittedExam} submitExam            The name of the event (or the events separated by spaces).
-   * @return {ArrayList<Question_Markers>} Returns .
-   */
+     * Algorithm for markers selection of a single exam.
+     *
+     * @param {SubmittedExam} submitExam The name of the event (or the events
+     * separated by spaces).
+     * @return {ArrayList<Question_Markers>} Returns .
+     */
     public ArrayList<Question_Markers> ASXMS(SubmittedExam submitExam) throws SQLException {
         inst.increaseAllMarkersTemporalReputation(5);
         ArrayList<Question_Markers> question_markers = new ArrayList<Question_Markers>();
@@ -45,7 +51,8 @@ public class Algorythms {
         ArrayList<Marker> selected_markers = new ArrayList<Marker>();
         for (int markers_counter = 0; markers_counter < expected_markers_number; markers_counter++) {
             Marker new_marker = new Marker();
-            new_marker = ASMS_RW(list_all, question_topic);
+            int roulette_sw = markers_counter % 2;
+            new_marker = ASMS_RW(list_all, question_topic, roulette_sw);
             if (list_all.size() > 0 && new_marker != null) {
                 list_all.remove(new_marker.getMail());
             }
@@ -54,8 +61,8 @@ public class Algorythms {
         return selected_markers;
     }
 
-    /*  Algorithm for single marker selection using Roulette wheel  */
-    public Marker ASMS_RW(ArrayList<String> markers_list, int topic) {
+    public float calculateOverallTempRep(int direction, ArrayList<String> markers_list, int topic) {
+        /* calculate overall temporal_reputation in markers_list(direction) */
         float sum = 0;
         for (String mlist : markers_list) {
             for (Marker m : Main.markersAndReputation) {
@@ -69,7 +76,31 @@ public class Algorythms {
                 }
             }
         }
-        float RW_range = sum / markers_list.size();
+        return sum / markers_list.size();
+    }
+
+    public void print(String content){
+        System.out.println(content);
+    }
+    
+    /*  Algorithm for single marker selection using Roulette wheel  */
+    public Marker ASMS_RW(ArrayList<String> markers_list, int topic, int direction) {
+
+        float RW_range = calculateOverallTempRep(direction, markers_list, topic);
+        
+        for (String mlist : markers_list) {
+            for (Marker m : Main.markersAndReputation) {
+                if (mlist.equals(m.getMail())) {
+                    for (ReputationTopic rep : m.getReputation_topic()) {
+                        if (rep.getTopic_id() == topic) {
+                            if(direction==0) RW_range += rep.getTemporalReputation();
+                            else RW_range += (1-rep.getTemporalReputation());
+                        }
+                    }
+                }
+            }
+        }
+        
         Random r = new Random();
         float roulette_position = r.nextFloat() * (0.00001f + RW_range);
         float reputation_sum = 0;
@@ -81,18 +112,26 @@ public class Algorythms {
                     if (mlist.equals(m.getMail())) {
                         for (ReputationTopic rep : m.getReputation_topic()) {
                             if (rep.getTopic_id() == topic) {
-                                reputation_sum += rep.getTemporalReputation();
+                                if(direction==0) {
+                                    reputation_sum += rep.getTemporalReputation();
+                                }   
+                                else {
+                                    reputation_sum += (1-rep.getTemporalReputation());
+                                }
+                                
                                 if (reputation_sum >= roulette_position) {
                                     selected_marker = m;
                                     rep.setTemporalReputation(rep.getTemporalReputation() - 0.15f);
+                                    //decrease tempRep
                                 }
                                 break;
                             }
                         }
                     }
                 }
-            } 
-            else break;
+            } else {
+                break;
+            }
         }
         return selected_marker;
     }
@@ -143,5 +182,15 @@ public class Algorythms {
             }
         }
 
-    }
+    }    
+/*         </ ALGORYTHMS TO SELECT EXAM MARKERS >
+/****************************************************************/
+    
+    
+    
+    
+/****************************************************************/
+/*         < ALGORYTHMS TO CALCULATE THE SCORE OF EXAMS >
+ */
+    
 }
