@@ -19,10 +19,11 @@ import logicetoile.Main;
 
 public class Algorythms {
 
-/****************************************************************/
-/*         < ALGORYTHMS TO SELECT EXAM MARKERS >
- * 
- */
+    /**
+     * *************************************************************
+     */
+    /*         < ALGORYTHMS TO SELECT EXAM MARKERS >
+     */
     private MySQL inst;
     static final int numberOfMarkersPerQuestion = 1;
 
@@ -79,28 +80,31 @@ public class Algorythms {
         return sum / markers_list.size();
     }
 
-    public void print(String content){
+    public void print(String content) {
         System.out.println(content);
     }
-    
+
     /*  Algorithm for single marker selection using Roulette wheel  */
     public Marker ASMS_RW(ArrayList<String> markers_list, int topic, int direction) {
 
         float RW_range = calculateOverallTempRep(direction, markers_list, topic);
-        
+
         for (String mlist : markers_list) {
             for (Marker m : Main.markersAndReputation) {
                 if (mlist.equals(m.getMail())) {
                     for (ReputationTopic rep : m.getReputation_topic()) {
                         if (rep.getTopic_id() == topic) {
-                            if(direction==0) RW_range += rep.getTemporalReputation();
-                            else RW_range += (1-rep.getTemporalReputation());
+                            if (direction == 0) {
+                                RW_range += rep.getTemporalReputation();
+                            } else {
+                                RW_range += (1 - rep.getTemporalReputation());
+                            }
                         }
                     }
                 }
             }
         }
-        
+
         Random r = new Random();
         float roulette_position = r.nextFloat() * (0.00001f + RW_range);
         float reputation_sum = 0;
@@ -112,13 +116,12 @@ public class Algorythms {
                     if (mlist.equals(m.getMail())) {
                         for (ReputationTopic rep : m.getReputation_topic()) {
                             if (rep.getTopic_id() == topic) {
-                                if(direction==0) {
+                                if (direction == 0) {
                                     reputation_sum += rep.getTemporalReputation();
-                                }   
-                                else {
-                                    reputation_sum += (1-rep.getTemporalReputation());
+                                } else {
+                                    reputation_sum += (1 - rep.getTemporalReputation());
                                 }
-                                
+
                                 if (reputation_sum >= roulette_position) {
                                     selected_marker = m;
                                     rep.setTemporalReputation(rep.getTemporalReputation() - 0.15f);
@@ -171,7 +174,7 @@ public class Algorythms {
                     //SubmittedExams == ExpectedSubmittedExams
                     //AND submittedExams > 1
                     ArrayList<Question_Markers> marksXquests = ASXMS(sub);
-                    System.out.println(marksXquests.get(1).getQuestion_markers_list().get(0));
+                    //System.out.println("lala: "+marksXquests.get(1).getQuestion_markers_list().get(0));
                     if (Main.exam_markers[sub.getSubmittedExam_id()] == null) {
                         Main.exam_markers[sub.getSubmittedExam_id()] = new Exam_Markers();
                         Main.exam_markers[sub.getSubmittedExam_id()].setMarkersPerQuestion(marksXquests);
@@ -182,15 +185,53 @@ public class Algorythms {
             }
         }
 
-    }    
-/*         </ ALGORYTHMS TO SELECT EXAM MARKERS >
-/****************************************************************/
+    }
+    /*
+     /*         </ ALGORYTHMS TO SELECT EXAM MARKERS >
+     /****************************************************************/
+
+    
+    
+    /**
+     * *************************************************************
+     */
+    /*         < ALGORYTHMS TO CALCULATE THE SCORE OF EXAMS >
+     */
     
     
     
     
-/****************************************************************/
-/*         < ALGORYTHMS TO CALCULATE THE SCORE OF EXAMS >
- */
-    
+    /*Algorithm for monitoring marked exams:*/
+    public void monitorMarkedExams()
+            throws ClassNotFoundException,
+            InstantiationException,
+            IllegalAccessException,
+            SQLException {
+        
+        /* obtain submittedExams */
+        Set set = Main.exams.entrySet();
+        Iterator examID = set.iterator();
+        while (examID.hasNext()) {//while (i -> Submitted Exams) {
+            Map.Entry iterator = (Map.Entry) examID.next();
+            int i = (int) iterator.getKey();
+            print("exam-0" + i);
+            for (SubmittedExam e : Main.submttExams[i].getSubmExams()) {
+                if(e.getReviewd()==0){
+                    print("\tsubmExamID: " + e.getSubmittedExam_id() + " - "+ e.getMail() + " - reviewed: " + e.getReviewd());
+                }
+            }
+        }
+        /* obtain submittedExams */
+        
+    }
+
+    /*Algorithm to calculate student_exam_score: ASCRX (student, exam_id) :*/
+    public void ASCRX() {
+    }
+
+    /*Algorithm to calculate student_answer_score: ASCA (answer_id):*/
+    public void ASCRA() {
+    }
+    /*         </ ALGORYTHMS TO CALCULATE THE SCORE OF EXAMS >
+     /****************************************************************/
 }
