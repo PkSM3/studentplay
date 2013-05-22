@@ -44,6 +44,7 @@ public class Main {
                 }
                 System.out.println();
             }
+            System.out.println("All this must be saved in the database");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -55,29 +56,8 @@ public class Main {
         }
     }
 
-    private static void calculateExamsScore() {
-        try {
-            
-            
-            Algorythms inst = new Algorythms();
-            inst.monitorMarkedExams();
-            
-            
-            
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public static void main(String[] args) {
         createExamMarkers();
-        System.out.println("\n*********************************************\n");
-        calculateExamsScore();
     }
 }

@@ -19,9 +19,7 @@ import logicetoile.Main;
 
 public class Algorythms {
 
-    /**
-     * *************************************************************
-     */
+    /**************************************************************
     /*         < ALGORYTHMS TO SELECT EXAM MARKERS >
      */
     private MySQL inst;
@@ -187,19 +185,17 @@ public class Algorythms {
 
     }
     /*
-     /*         </ ALGORYTHMS TO SELECT EXAM MARKERS >
-     /****************************************************************/
+    /*         </ ALGORYTHMS TO SELECT EXAM MARKERS >
+    /****************************************************************/
 
     
     
-    /**
-     * *************************************************************
-     */
+    
+    //The following methods must go in other javaApp:
+    
+    /**************************************************************
     /*         < ALGORYTHMS TO CALCULATE THE SCORE OF EXAMS >
      */
-    
-    
-    
     
     /*Algorithm for monitoring marked exams:*/
     public void monitorMarkedExams()
@@ -224,7 +220,7 @@ public class Algorythms {
         /* obtain submittedExams */
         
     }
-
+    
     /*Algorithm to calculate student_exam_score: ASCRX (student, exam_id) :*/
     public void ASCRX() {
     }
@@ -232,6 +228,8 @@ public class Algorythms {
     /*Algorithm to calculate student_answer_score: ASCA (answer_id):*/
     public void ASCRA() {
     }
+    
+    
     /*         </ ALGORYTHMS TO CALCULATE THE SCORE OF EXAMS >
      /****************************************************************/
 }
