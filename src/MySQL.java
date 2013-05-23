@@ -1,10 +1,5 @@
-package DAOFactory;
 
-import Entities.Exam;
-import Entities.Marker;
-import Entities.Module;
-import Entities.ReputationTopic;
-import Entities.SubmittedExam;
+
 import com.mysql.jdbc.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -12,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import logicetoile.Main;
 
 public class MySQL {
 

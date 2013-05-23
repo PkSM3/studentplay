@@ -1,12 +1,6 @@
-package Logic;
 
-import DAOFactory.MySQL;
-import Entities.Exam;
-import Entities.Exam_Markers;
-import Entities.Question_Markers;
-import Entities.Marker;
-import Entities.ReputationTopic;
-import Entities.SubmittedExam;
+
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +9,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import logicetoile.Main;
 
 public class Algorythms {
 

@@ -1,5 +1,5 @@
 
-package Entities;
+
 
 public class ReputationTopic {
     private short topic_id;
